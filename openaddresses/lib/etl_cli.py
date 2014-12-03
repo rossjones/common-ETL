@@ -56,7 +56,10 @@ class ETL(object):
             sys.exit(1)
 
         pth = self._ensure_relative_directory('data/{}'.format(tag))
-        pkg['processor'](self.config, pth)
+        processor_klass = pkg['processor']
+        processor = processor_klass()
+        processor.set_config(self.config, pth)
+        processor.process()
 
     def _ensure_relative_directory(self, path):
         """ Makes sure the path provided exists from CWD """
