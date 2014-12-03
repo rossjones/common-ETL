@@ -15,7 +15,8 @@ setup(
     install_requires=[
         'MySQL-python==1.2.5',
         'pyshp==1.2.1',
-        'docopt==0.6.2'
+        'docopt==0.6.2',
+        'requests==2.5.0'
     ],
     package_data={
         'sql': ['os_alpha_etl.sql'],

@@ -1,7 +1,7 @@
-import urllib2
-import zipfile
 import os
+import zipfile
 
+import requests
 
 def download(target_folder):
     filenames = [
@@ -15,12 +15,17 @@ def download(target_folder):
     for filename in filenames:
         print "Downloading {}".format(filename)
         url = 'http://download.companieshouse.gov.uk/' + filename
-        file = urllib2.urlopen(url)
+        target_out = os.path.join(target_folder, filename)
 
-        target_out =os.path.join(target_folder, filename)
-        output = open(target_out,'wb')
-        output.write(file.read())
-        output.close()
+        # Stream directly to the file in 4k chunks. Lower memory usage
+        # and should be faster too.
+        req = requests.get(url, stream=True)
+        with open(target_out, 'wb') as f:
+            for chunk in req.iter_content(chunk_size=4096):
+                if chunk:
+                    f.write(chunk)
+                    f.flush()
+
         with zipfile.ZipFile(target_out, 'r') as datazip:
             datazip.extractall()
         os.remove(target_out)
