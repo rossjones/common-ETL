@@ -18,10 +18,15 @@ git clone https://github.com/rossjones/common-ETL.git
 cd common-ETL
 python setup.py develop
 
+# Make changes to config file ....
+# TODO: Document and specify to etl command
+
 # List all the known packages
 etl list
 # Download the CH data
 etl download ch
+# Process the ch data
+etl process ch 
 
 ```
 
