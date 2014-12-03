@@ -10,19 +10,28 @@ from openaddresses.etl.collector import Collector
 def null_download(pth):
     print "This package does not have a downloader"
 
+class NullProcessor(object):
+    def set_config(*args):
+        pass
+
+    def process(*args):
+        print "This package does not have a processor"
+
 PACKAGES = {
     'ch':    {'label': 'Companies House',
               'download': ch_download,
               'processor': CHProcessor },
+
     'onspd': {'label': 'ONSPD',
               'download': onspd_download,
-              'processor': None},
-    'os':    {'label': 'OS Locator',
-              'download': os_download,
-              'processor': None},
-    'collect': { 'label': 'Collector',
-                 'download': null_download,
-                 'processor': Collector}
+              'processor': NullProcessor },
 
+    'os':    {'label':    'OS Locator',
+              'download':  os_download,
+              'processor': NullProcessor },
+
+    'collect': { 'label':    'Collector',
+                 'download':  null_download,
+                 'processor': Collector }
 }
 
