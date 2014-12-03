@@ -1,4 +1,4 @@
-# 
+#
 # Open addresses ETL Common Library
 # Open addresses ONSPD ETL tool
 #
@@ -15,7 +15,8 @@ import csv
 import glob
 import MySQLdb
 import string
-from bulkinsert import *
+
+from openaddresses.lib.bulkinsert import *
 
 # Read database configuration from config file
 config = ConfigParser.ConfigParser()
@@ -26,7 +27,7 @@ hostname = config.get('database', 'hostname')
 database = config.get('database', 'database')
 
 dbConn = MySQLdb.connect(host=hostname,user=username,passwd=password,db=database)
-cur = dbConn.cursor() 
+cur = dbConn.cursor()
 
 query = "TRUNCATE TABLE  `ONSPD`;"
 cur.execute(query)
@@ -71,7 +72,7 @@ for file in glob.glob("ONSPD*.csv"):
             ONSPD_bi.addRow(lines)
     print "Records read: " + str(nrecs)
     csvfile.close()
-ONSPD_bi.close() 
+ONSPD_bi.close()
 dbConn.commit()
 
 print "Writing changes to database"
@@ -87,6 +88,6 @@ for term_pc in ret_pcds:
         nwrit += 1
         for row in cur.fetchall():
            change_bi.addRow([row[0],term_pc[0]])
-change_bi.close() 
+change_bi.close()
 dbConn.commit()
 dbConn.close()

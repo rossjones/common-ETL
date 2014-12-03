@@ -1,4 +1,4 @@
-# 
+#
 # Open addresses ETL Common Library
 # Open addresses Extract Point From Point Collection Shapefile
 #
@@ -16,8 +16,8 @@ import datetime
 import glob
 import unicodedata
 
-from extract_shape_points import *
-from bulkinsert import *
+from openaddresses.lib.extract_shape_points import *
+from openaddresses.lib.bulkinsert import *
 
 # Read database configuration from config file
 config = ConfigParser.ConfigParser()
@@ -28,7 +28,7 @@ hostname = config.get('database', 'hostname')
 database = config.get('database', 'database')
 
 dbConn = MySQLdb.connect(host=hostname,user=username,passwd=password,db=database)
-cur = dbConn.cursor() 
+cur = dbConn.cursor()
 
 query = "TRUNCATE TABLE  `Settlements`;"
 cur.execute(query)
@@ -55,5 +55,5 @@ for file in glob.glob("*.shp"):
             lines.extend(p[0])
             Sett_bi.addRow(lines)
 
-Sett_bi.close() 
+Sett_bi.close()
 dbConn.commit()

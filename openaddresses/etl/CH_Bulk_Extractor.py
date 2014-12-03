@@ -13,8 +13,6 @@
 import ConfigParser
 import csv
 import glob
-from postcode_class import *
-from address_lines import *
 import sys
 import json
 import datetime
@@ -23,6 +21,10 @@ import urllib
 import urllib2
 import MySQLdb
 import collections
+
+from openaddresses.lib.postcode_class import *
+from openaddresses.lib.address_lines import *
+
 
 # Store a list of addresses into the API
 def storeAddresses(out):

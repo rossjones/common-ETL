@@ -2,3 +2,9 @@
 *.txt
 *.zip
 *.pyc
+
+openaddresses.egg-info/
+bin/
+include/
+lib/
+.Python

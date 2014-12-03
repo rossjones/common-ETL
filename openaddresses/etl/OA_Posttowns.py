@@ -1,4 +1,4 @@
-# 
+#
 # Open addresses Common ETL Library
 # Open addresses Extract Post Towns From Wikipedia
 #
@@ -15,7 +15,8 @@ from HTMLParser import HTMLParser
 import urllib
 import urllib2
 import csv
-from bulkinsert import *
+
+from openaddresses.lib.bulkinsert import *
 
 # Read database configuration from config file
 config = ConfigParser.ConfigParser()
@@ -26,7 +27,7 @@ hostname = config.get('database', 'hostname')
 database = config.get('database', 'database')
 
 dbConn = MySQLdb.connect(host=hostname,user=username,passwd=password,db=database)
-cur = dbConn.cursor() 
+cur = dbConn.cursor()
 
 query = "TRUNCATE TABLE  `Posttowns`;"
 cur.execute(query)
@@ -68,15 +69,15 @@ class TownExtractor(HTMLParser):
     def handle_endtag(self, tag):
         if tag == "table":
             self.towntable = False
-            
+
     def handle_data(self, data):
         if self.areatag:
             self.pcarea = data
             self.areatag = False
-        if self.towntag: 
+        if self.towntag:
             self.towns.append([self.pcarea, data.decode('ISO-8859-1').encode('ascii','ignore').upper()])
             self.towntag = False
-            
+
 response = urllib2.urlopen(url)
 html = response.read()
 

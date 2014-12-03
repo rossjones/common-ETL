@@ -1,4 +1,4 @@
-# 
+#
 # Open addresses ETL Common Library
 # Open addresses Ordance Survey Locator Opendata ETL tool
 #
@@ -14,7 +14,9 @@ import csv
 import glob
 import MySQLdb
 import string
-from bulkinsert import *
+
+from openaddresses.lib.bulkinsert import *
+
 
 # Read database configuration from config file
 config = ConfigParser.ConfigParser()
@@ -25,7 +27,7 @@ hostname = config.get('database', 'hostname')
 database = config.get('database', 'database')
 
 dbConn = MySQLdb.connect(host=hostname,user=username,passwd=password,db=database)
-cur = dbConn.cursor() 
+cur = dbConn.cursor()
 
 query = "TRUNCATE TABLE  `OS_Locator`;"
 cur.execute(query)
@@ -43,7 +45,7 @@ for file in glob.glob("OS*.txt"):
 
     csvfile = open(file, 'rb')
     reader = csv.reader(csvfile, delimiter=':', quoting=csv.QUOTE_NONE)
-    
+
     for row in reader:
         nrecs += 1
         # print row
@@ -57,12 +59,12 @@ for file in glob.glob("OS*.txt"):
         # print poly
         row.append(poly)
         bi.addRow(row)
-    
+
         # query = basequery + "VALUES(" + string.join(["'" + field.replace("'","\\'") + "'" for field in row],",") + ");"
         # print query
         # cur.execute(query)
 
-print "Records read: " + str(nrecs)        
-bi.close() 
+print "Records read: " + str(nrecs)
+bi.close()
 dbConn.commit()
 dbConn.close()
