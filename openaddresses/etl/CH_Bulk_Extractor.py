@@ -10,7 +10,6 @@
 # Purpose       Bulk extract of addresses from Companies House Data
 #
 
-import ConfigParser
 import csv
 import glob
 import sys
@@ -119,33 +118,37 @@ def process_file(file):
 
 # Main script
 
-# Error timeout parameters
-max_tries = 100                         # Maximum number of retries
-wait_min = 1                            # First wait time (seconds)
-wait_increment = 5                      # Wait time increment (seconds)
+dbConn, cur = None, None
+a = None
 
-# Read api configuration from config file
-config = ConfigParser.ConfigParser()
-config.read("oa_alpha_etl.cnf")
-apiurl = config.get('api', 'url')
-apitoken = config.get('api', 'token')
+def run(config, data_folder):
 
-# Read database configuration from config file
-username = config.get('database', 'username')
-password = config.get('database', 'password')
-hostname = config.get('database', 'hostname')
-database = config.get('database', 'database')
+    # Error timeout parameters
+    max_tries = 100                         # Maximum number of retries
+    wait_min = 1                            # First wait time (seconds)
+    wait_increment = 5                      # Wait time increment (seconds)
 
-dbConn = MySQLdb.connect(host=hostname,user=username,passwd=password,db=database)
-cur = dbConn.cursor()
+    # Read api configuration from config file
+    apiurl = config.get('api', 'url')
+    apitoken = config.get('api', 'token')
 
-a = AddressLines(cur)
+    # Read database configuration from config file
+    username = config.get('database', 'username')
+    password = config.get('database', 'password')
+    hostname = config.get('database', 'hostname')
+    database = config.get('database', 'database')
 
-csvout = open('CompanyTowns.txt', 'wb')
-companywriter = csv.writer(csvout, delimiter=',',quotechar='"', quoting=csv.QUOTE_MINIMAL)
-companywriter.writerow(['Postcode', 'Town', 'Sector', 'Aons'])
+    dbConn = MySQLdb.connect(host=hostname,user=username,passwd=password,db=database)
+    cur = dbConn.cursor()
+    a = AddressLines(cur)
 
-for file in glob.glob("Basic*.csv"):
-    process_file(file)
+    town_path = os.path.join(data_folder, 'CompanyTowns.txt')
+    csvout = open(town_path, 'wb')
 
-csvout.close()
+    companywriter = csv.writer(csvout, delimiter=',',quotechar='"', quoting=csv.QUOTE_MINIMAL)
+    companywriter.writerow(['Postcode', 'Town', 'Sector', 'Aons'])
+
+    for file in glob.glob(os.path.join(data_folder, "Basic*.csv")):
+        process_file(file)
+
+    csvout.close()
