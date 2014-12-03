@@ -21,8 +21,8 @@ import urllib2
 import MySQLdb
 import collections
 
-from openaddresses.lib.postcode_class import *
-from openaddresses.lib.address_lines import *
+from openaddresses.lib.postcode_class import Postcode
+from openaddresses.lib.address_lines import AddressLines
 
 from openaddresses.etl import Processor
 
@@ -64,7 +64,7 @@ class CHProcessor(Processor):
         if len(out['addresses']) > 0:                # Check there is data to write
             data = json.dumps(out, indent=1)
             headers = { 'ACCESS_TOKEN' :self.apitoken, 'Content-Type': 'application/json' }
-            req = urllib2.Request(self.apiurl, data, headers)
+            req = urllib2.Request(url, data, headers)
             ntries = 0
             while ntries < max_tries:
                 try:
