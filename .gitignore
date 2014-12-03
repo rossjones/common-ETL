@@ -6,5 +6,5 @@
 openaddresses.egg-info/
 bin/
 include/
-lib/
+^lib/
 .Python
