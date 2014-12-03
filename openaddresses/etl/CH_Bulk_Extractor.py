@@ -30,8 +30,8 @@ class CHProcessor(Processor):
 
     def process(self):
         # Read api configuration from config file
-        apiurl = self.config.get('api', 'url')
-        apitoken = self.config.get('api', 'token')
+        self.apiurl = self.config.get('api', 'url')
+        self.apitoken = self.config.get('api', 'token')
 
         # Read database configuration from config file
         username = self.config.get('database', 'username')
@@ -63,9 +63,8 @@ class CHProcessor(Processor):
 
         if len(out['addresses']) > 0:                # Check there is data to write
             data = json.dumps(out, indent=1)
-            headers = { 'ACCESS_TOKEN' : apitoken, 'Content-Type': 'application/json' }
-            url = apiurl
-            req = urllib2.Request(url, data, headers)
+            headers = { 'ACCESS_TOKEN' :self.apitoken, 'Content-Type': 'application/json' }
+            req = urllib2.Request(self.apiurl, data, headers)
             ntries = 0
             while ntries < max_tries:
                 try:
