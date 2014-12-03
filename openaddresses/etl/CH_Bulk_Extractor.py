@@ -18,12 +18,10 @@ import datetime
 import time
 import urllib
 import urllib2
-import MySQLdb
 import collections
 
 from openaddresses.lib.postcode import Postcode
 from openaddresses.lib.address_lines import AddressLines
-
 from openaddresses.etl import Processor
 
 class CHProcessor(Processor):
@@ -52,6 +50,8 @@ class CHProcessor(Processor):
 
                 for file in glob.glob(os.path.join(data_folder, "Basic*.csv")):
                     self.process_file(file)
+
+            self.dbConn.close()
         except Exception, e:
             print e
 
