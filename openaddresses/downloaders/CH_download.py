@@ -27,5 +27,5 @@ def download(target_folder):
                     f.flush()
 
         with zipfile.ZipFile(target_out, 'r') as datazip:
-            datazip.extractall()
+            datazip.extractall(target_folder)
         os.remove(target_out)

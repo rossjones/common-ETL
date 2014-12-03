@@ -21,7 +21,7 @@ import urllib2
 import MySQLdb
 import collections
 
-from openaddresses.lib.postcode_class import Postcode
+from openaddresses.lib.postcode import Postcode
 from openaddresses.lib.address_lines import AddressLines
 
 from openaddresses.etl import Processor
