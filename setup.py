@@ -14,7 +14,8 @@ setup(
     packages=find_packages(exclude=['contrib', 'docs', 'tests*']),
     install_requires=[
         'MySQL-python==1.2.5',
-        'pyshp==1.2.1'
+        'pyshp==1.2.1',
+        'docopt==0.6.2'
     ],
     package_data={
         'sql': ['os_alpha_etl.sql'],
